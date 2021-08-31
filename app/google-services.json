@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "587959188148",
+    "project_id": "catchat-27e0e",
+    "storage_bucket": "catchat-27e0e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:587959188148:android:21585ee5a58a661c47f5e1",
+        "android_client_info": {
+          "package_name": "cat.heavenly.chat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "587959188148-8pp4laqb9u7chp8slatnbdj67khrkg5a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBtGTY2Tq8lbJQt7ba7FtiSNehX_UF3NaM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "587959188148-8pp4laqb9u7chp8slatnbdj67khrkg5a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
