@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 	<!-- Base application theme. -->
-	<style name="Theme.CatChat" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+	<style name="Theme.CatChat" parent="Theme.MaterialComponents.Light.NoActionBar">
 		<!-- Primary brand color. -->
 		<item name="colorPrimary">@color/yellow_600</item>
 		<item name="colorPrimaryVariant">@color/yellow_700</item>
@@ -20,8 +20,4 @@
 		<item name="windowActionBar">false</item>
 		<item name="windowNoTitle">true</item>
 	</style>
-
-	<style name="Theme.CatChat.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-	<style name="Theme.CatChat.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

@@ -2,14 +2,20 @@ package cat.heavenly.chat.fragments.enterChat;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.IntentSenderRequest;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -19,9 +25,11 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
@@ -32,10 +40,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.Objects;
+import java.util.concurrent.Executor;
 
 import cat.heavenly.chat.R;
 import cat.heavenly.chat.activities.ChatActivity;
 import cat.heavenly.chat.databinding.FragmentEnterChatBinding;
+import cat.heavenly.chat.entities.Message;
 
 public class EnterChatFragment extends Fragment {
 	private FragmentEnterChatBinding binding;
@@ -87,13 +97,31 @@ public class EnterChatFragment extends Fragment {
 		// Quando clicar no botão, busca uma sala com o ID fornecido e
 		// entra, ou cria uma nova sala, se o ID fornecido ainda não existir
 		Button enterChat = binding.button;
+		TextInputEditText inputChatId = binding.chatId; // findViewById(R.id.chat_id)
+
+		enterChat.setEnabled(false);
+
+		inputChatId.addTextChangedListener(new TextWatcher() {
+			@Override
+			public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
+
+			@Override
+			public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
+
+			@Override
+			public void afterTextChanged(Editable editable) {
+				enterChat.setEnabled(!editable.toString().trim().isEmpty());
+			}
+		});
+
 		enterChat.setOnClickListener(v -> {
-			TextInputEditText inputChatId = binding.chatId; // findViewById(R.id.chat_id)
 			FirebaseUser user = firebaseAuth.getCurrentUser();
 
 			if (user != null) {
 				if (!Objects.requireNonNull(inputChatId.getText()).toString().isEmpty()) {
-					String chatId = inputChatId.getText().toString().trim();
+					enterChat.setClickable(false);
+					enterChat.setText("...");
+					String chatId = inputChatId.getText().toString().trim().toLowerCase();
 					FirebaseDatabase database = FirebaseDatabase.getInstance();
 					DatabaseReference roomReference = database.getReference("/rooms/" + chatId);
 					DatabaseReference roomsReference = database.getReference("/rooms");
@@ -102,7 +130,7 @@ public class EnterChatFragment extends Fragment {
 						@Override
 						public void onDataChange(@NonNull DataSnapshot snapshot) {
 							if (!snapshot.exists()) {
-								roomsReference.child(chatId).child("name").setValue("Olar");
+								roomsReference.child(chatId).child("name").setValue("Chat " + chatId);
 							}
 
 							// Intent da página do chat
@@ -115,6 +143,9 @@ public class EnterChatFragment extends Fragment {
 							chatIntent.putExtra("chatId", chatId);
 
 							startActivity(chatIntent);
+							inputChatId.setText("");
+							enterChat.setClickable(true);
+							enterChat.setText("Entrar");
 						}
 
 						@Override
@@ -143,9 +174,8 @@ public class EnterChatFragment extends Fragment {
 		});
 
 		loginHelper.setOnClickListener(v -> {
-			Log.d(TAG, "BEGIN");
+			googleSignInClient.signOut();
 			Intent signInIntent = googleSignInClient.getSignInIntent();
-
 			startActivityForResult(signInIntent, RC_SIGN_IN);
 		});
 
@@ -175,25 +205,26 @@ public class EnterChatFragment extends Fragment {
 		Log.d(TAG, "firebaseAuthWithGoogleAccount: begin firebase auth with google account");
 		AuthCredential auth = GoogleAuthProvider.getCredential(account.getIdToken(), null);
 		firebaseAuth.signInWithCredential(auth)
-			.addOnSuccessListener(authResult -> {
-				Log.d(TAG, "firebaseAuthWithGoogleAccount: logged in");
-				FirebaseUser user = firebaseAuth.getCurrentUser();
-				if (user != null) {
-					String uid = user.getUid();
-					String email = user.getEmail();
-
-					Log.d(TAG, "firebaseAuthWithGoogleAccount: email " + email);
-					Log.d(TAG, "firebaseAuthWithGoogleAccount: UID " + uid);
-				}
-
-				if (authResult.getAdditionalUserInfo().isNewUser()) {
-					Log.d(TAG, "firebaseAuthWithGoogleAccount: new user");
+			.addOnCompleteListener(task -> {
+				if (task.isSuccessful()) {
+					Log.d("AUTH", "signInWithCredential:success");
+					Toast
+						.makeText(
+							binding.getRoot().getContext(),
+							"Sign-in successful!",
+							Toast.LENGTH_LONG
+						)
+						.show();
 				} else {
-					Log.d(TAG, "firebaseAuthWithGoogleAccount: old user");
+					Log.w("AUTH", "signInWithCredential:failure", task.getException());
+					Toast
+						.makeText(
+							binding.getRoot().getContext(),
+							"Sign-in failed, try again later.",
+							Toast.LENGTH_LONG
+						)
+						.show();
 				}
-			})
-			.addOnFailureListener(e -> {
-				Log.d(TAG, "firebaseAuthWithGoogleAccount: login failed" + e.getMessage());
 			});
 	}
 
