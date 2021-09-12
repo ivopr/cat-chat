@@ -70,9 +70,8 @@ public class EnterChatFragment extends Fragment {
 		GoogleSignInOptions gso =
 			new GoogleSignInOptions
 				.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-			.requestIdToken(getString(R.string.auth_client_id))
-			.requestEmail()
-			.build();
+				.requestEmail()
+				.build();
 
 		// Inicia o cliente de login com as configurações definidas anteriormente
 		googleSignInClient = GoogleSignIn

@@ -6,8 +6,10 @@
         <entry key="..\:/Users/ivopr/Desktop/git/cat-chat/app/src/main/res/layout/activity_chat.xml" value="0.33" />
         <entry key="..\:/Users/ivopr/Desktop/git/cat-chat/app/src/main/res/layout/activity_chat_settings.xml" value="0.33" />
         <entry key="..\:/Users/ivopr/Desktop/git/cat-chat/app/src/main/res/layout/activity_main.xml" value="0.22" />
-        <entry key="..\:/Users/ivopr/Desktop/git/cat-chat/app/src/main/res/layout/fragment_enter_chat.xml" value="0.33" />
+        <entry key="..\:/Users/ivopr/Desktop/git/cat-chat/app/src/main/res/layout/fragment_enter_chat.xml" value="0.2" />
+        <entry key="..\:/Users/ivopr/Desktop/git/cat-chat/app/src/main/res/layout/fragment_settings.xml" value="0.2" />
         <entry key="..\:/Users/ivopr/Desktop/git/cat-chat/app/src/main/res/layout/recycler_message.xml" value="0.512" />
+        <entry key="..\:/Users/ivopr/Desktop/git/cat-chat/app/src/main/res/menu/bottom_nav_menu.xml" value="0.2" />
         <entry key="..\:/Users/ivopr/Desktop/git/cat-chat/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.21614583333333334" />
         <entry key="app/src/main/res/layout/activity_chat.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.16666666666666666" />

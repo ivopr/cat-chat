@@ -7,11 +7,6 @@
     <string name="button_sign_out">Desconectar</string>
     <string name="settings_you_are_connected_as">Você está conectado(a) como</string>
 
-
-    <!-- IMPORTANT STRINGS -->
-    <string name="auth_client_id"></string>
-    <string name="auth_client_secret"></string>
-
     <string name="title_activity_chat">ChatActivity</string>
     <string name="action_settings">Settings</string>
 </resources>
